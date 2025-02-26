@@ -1,0 +1,30 @@
+.clean-button {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.clean-button:hover {
+    opacity: 0.7;
+}
+
+.snackbar-error {
+    background-color: pink;
+    color: red;
+}
+
+.snackbar-success {
+    background-color: greenyellow;
+}
+
+.snackbar{
+    border-radius: 10px;
+    padding: 5px 10px;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
