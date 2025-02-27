@@ -2,42 +2,35 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextInput from "../../components/textInput";
-import { registerUser } from "../../server/dispatchApi";
+import { loginUser, UserProfile } from "../../server/dispatchApi";
 import { Snackbar } from "../../components/snackBar";
 import './styles.css'
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export const Register = () => {
+export const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [isFormValid, setIsFormValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('')
   const [errorSnackBarVisible, setErrorSnackBarVisible] = useState(false)
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Email is required"),
-    first_name: Yup.string().required("First name is required"),
-    last_name: Yup.string().required("Last name is required"),
     password: Yup.string().required("Password is required"),
-    confirm_password: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      first_name: "",
-      last_name: "",
       password: "",
-      confirm_password: "",
     },
     validationSchema,
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values) => {
       console.log("Submitted Data:", values);
-      handleRegister(values);
+      handleLogin(values);
     },
   });
 
@@ -45,20 +38,21 @@ export const Register = () => {
     setIsFormValid(formik.isValid);
   }, [formik.isValid]);
 
-  const handleRegister = async (values) => {
+  const handleLogin = async (values) => {
     try {
-      const result = await dispatch(registerUser(values)).unwrap();
-  
-      console.log("Registration Result:", result);
-      if (result.status !== 200) {
+      const result = await dispatch(loginUser(values)).unwrap();
+
+      if (result.status !== 0) {
         setErrorMessage(result.message);
         setErrorSnackBarVisible(true);
       } else {
-        console.log("Registration Successful:", result);
+        console.log("Login Successful:", result);
+        dispatch(UserProfile(values))
+        navigate("/Dashboard")
       }
-  
+
     } catch (error) {
-      console.error("Registration Failed:", error);
+      console.error("Login Failed:", error);
       setErrorMessage(error?.message || "Something went wrong");
       setErrorSnackBarVisible(true);
     }
@@ -74,9 +68,9 @@ export const Register = () => {
           </div>
 
           <h2 className="form-title">
-            {"Lengkapi data untuk"}
+            {"Masuk atau buat akun"}
             <br />
-            {"membuat akun"}
+            {"untuk memulai"}
           </h2>
 
           <div className="input-container">
@@ -88,46 +82,23 @@ export const Register = () => {
               placeholder="masukkan email anda"
             />
             <TextInput
-              name="first_name"
-              value={formik.values.first_name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="nama depan"
-            />
-            <TextInput
-              name="last_name"
-              value={formik.values.last_name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="nama belakang"
-            />
-            <TextInput
               type="password"
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              placeholder="buat password"
+              placeholder="masukkan password anda"
             />
-            <TextInput
-              type="password"
-              name="confirm_password"
-              value={formik.values.confirm_password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="konfirmasi password"
-            />
-
             <button
               type="submit"
               disabled={!isFormValid}
               className={`submit-button ${!isFormValid ? 'disabled' : ''}`}
             >
-              {"Registrasi"}
+              {"Masuk"}
             </button>
           </div>
 
-          <h5 className="login-link">{"Sudah punya akun? Login "}<Link to={"/Login"} className="no-underline"><span className="text-red-500">{'disini'}</span></Link></h5>
+          <h5 className="login-link">{"Belum punya akun? Registrasi "}<Link to={"/"} className="no-underline"><span className="text-red-500">{'disini'}</span></Link></h5>
 
         </form>
 
