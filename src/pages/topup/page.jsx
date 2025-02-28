@@ -23,7 +23,7 @@ export const TopupBalance = () => {
   ];
 
   const formik = useFormik({
-    initialValues: { topupBalance: "" },
+    initialValues: { topupBalance: 0 },
     onSubmit: (values) => {
       handleTopup(values.topupBalance)
     },
@@ -31,7 +31,7 @@ export const TopupBalance = () => {
 
   const handleTopup = async ( values) => {
     try {
-      dispatch(Topup({ token: tokenData, amount: values.topupBalance }))
+      dispatch(Topup({ token: tokenData, amount: formik.values.topupBalance }))
     } catch (error) {
       console.error("Topup Failed:", error);
     }

@@ -1,0 +1,40 @@
+.transaction-history-container {
+    padding: 20px;
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+}
+
+.amount-positive {
+    color: green;
+}
+
+.amount-negative {
+    color: red;
+}
+
+.transaction-date {
+    color: gray;
+}
+
+.transaction-description {
+    font-weight: normal;
+}
+
+.show-more {
+    text-align: center;
+    cursor: pointer;
+    color: red;
+}

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { HideBalance } from "../hideBalance"
 
-export const Header = ({userProfile, userBalance}) => {
+export const Header = ({ userProfile, userBalance }) => {
     const [profileImage, setProfileImage] = useState(userProfile?.data?.profile_image)
 
+    const formattedAmount = new Intl.NumberFormat("id-ID", {
+        minimumFractionDigits: 0,
+    }).format(userBalance?.balance);
 
     const handleImageError = () => {
         setProfileImage('/assets/Profile_Photo.png')
-      }
+    }
 
     return (
         <div className="flex direction-row">
@@ -24,7 +27,7 @@ export const Header = ({userProfile, userBalance}) => {
             <div className="flex-1 p-5">
                 <div className="bg-red-500 p-5 rounded-xl">
                     <h5 className='text-white'>{'Saldo anda'}</h5>
-                    <HideBalance balance={userBalance?.balance} />
+                    <HideBalance balance={formattedAmount} />
                     <div>
                     </div>
                 </div>

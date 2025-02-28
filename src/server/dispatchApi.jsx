@@ -184,32 +184,31 @@ export const Banner = createAsyncThunk(
 // Topup
 export const Topup = createAsyncThunk(
   "auth/topup",
-  async ({token, amount}, { rejectWithValue }) => {
-
+  async ({ token, amount }, { rejectWithValue }) => {
     if (!token) {
       return rejectWithValue("No token found");
     }
-    console.log('topup')
+
     try {
       const response = await fetch("https://take-home-test-api.nutech-integrasi.com/topup", {
         method: "POST",
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            top_up_amount: amount,
-          }),
-      });
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          top_up_amount: amount,
+        }),
+      }
+      );
 
-      console.log('topup response: ', response)
+      const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error("Failed to fetch topup");
+        return rejectWithValue(data?.message || "Failed to fetch topup");
       }
-      
-      const data = await response.json();
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -220,7 +219,7 @@ export const Topup = createAsyncThunk(
 // Transaction
 export const Transaction = createAsyncThunk(
   "auth/transaction",
-  async ({token, service}, { rejectWithValue }) => {
+  async ({ token, service }, { rejectWithValue }) => {
 
     if (!token) {
       return rejectWithValue("No token found");
@@ -238,6 +237,8 @@ export const Transaction = createAsyncThunk(
         }),
       });
 
+      console.log('transaction response: ', response)
+
       if (!response.ok) {
         throw new Error("Failed to fetch transaction");
       }
@@ -253,11 +254,13 @@ export const Transaction = createAsyncThunk(
 // Transaction History
 export const TransactionHistory = createAsyncThunk(
   "auth/transactionHistory",
-  async (token, offset, limit, { rejectWithValue }) => {
+  async ({ token, offset, limit }, { rejectWithValue }) => {
+    console.log('data: ', token, offset, limit)
 
     if (!token) {
       return rejectWithValue("No token found");
     }
+
 
     try {
       const response = await fetch(`https://take-home-test-api.nutech-integrasi.com/transaction/history?offset=${offset}&limit=${limit}`, {
@@ -267,6 +270,8 @@ export const TransactionHistory = createAsyncThunk(
           "Authorization": `Bearer ${token}`,
         },
       });
+
+      console.log('transaction history response: ', response)
 
       if (!response.ok) {
         throw new Error("Failed to fetch transaction");

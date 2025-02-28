@@ -15,7 +15,7 @@ export const TopNavigation = () => {
         <a href="/TopupBalance" className={`hover:text-red-500 ${isActive("/TopupBalance")}`}>
           Top Up
         </a>
-        <a href="/Transactions" className={`hover:text-red-500 ${isActive("/Transactions")}`}>
+        <a href="/TransactionsHistory" className={`hover:text-red-500 ${isActive("/TransactionsHistory")}`}>
           Transactions
         </a>
         <a href="/Account" className={`hover:text-red-500 ${isActive("/Account")}`}>

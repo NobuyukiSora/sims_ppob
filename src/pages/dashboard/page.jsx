@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Banner, Services, UserBalance, UserProfile } from "../../server/dispatchApi";
 import { TopNavigation } from "../../components/topNavigation";
 import { Header } from "../../components/header";
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const tokenData = useSelector((state) => state.auth.token);
   const userProfile = useSelector((state) => state.auth.profile);
   const userBalance = useSelector((state) => state.auth.balance);
@@ -27,14 +30,20 @@ export const Dashboard = () => {
     <div>
       <TopNavigation />
       <div>
-        <Header userBalance={userBalance} userProfile={userProfile}/>
+        <Header userBalance={userBalance} userProfile={userProfile} />
         {/* Services */}
         <ul className="flex flex-wrap justify-around list-none p-0">
           {services &&
             services.map((item, index) => (
-              <li key={index} className="flex flex-col items-center p-3" style={{ width: 100 }}>
-                <img src={item?.service_icon} alt={item?.service_name} className="w-12 h-12 mb-1" />
-                <h5 className="text-center text-wrap">{item?.service_name}</h5>
+              <li key={index} >
+                <a
+                  className="flex flex-col items-center p-3"
+                  style={{ width: 100 }}
+                  onClick={() => navigate("/Transaction", { state: { item } })}
+                >
+                  <img src={item?.service_icon} alt={item?.service_name} className="w-12 h-12 mb-1" />
+                  <h5 className="text-center text-wrap">{item?.service_name}</h5>
+                </a>
               </li>
             ))}
         </ul>

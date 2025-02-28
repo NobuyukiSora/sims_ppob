@@ -131,7 +131,7 @@ const authSlice = createSlice({
             })
             .addCase(TransactionHistory.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.transaction = action.payload?.data;
+                state.transactionHistory = action.payload?.data;
             })
             .addCase(TransactionHistory.rejected, (state, action) => {
                 state.status = "failed";
