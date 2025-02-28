@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Banner, Services, UserBalance, UserProfile } from "../../server/dispatchApi";
-import { HideBalance } from "../../components/hideBalance";
 import { TopNavigation } from "../../components/topNavigation";
+import { Header } from "../../components/header";
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,6 @@ export const Dashboard = () => {
   const userBalance = useSelector((state) => state.auth.balance);
   const banner = useSelector((state) => state.auth.banner);
   const services = useSelector((state) => state.auth.services);
-  const [profileImage, setProfileImage] = useState(userProfile?.data?.profile_image)
 
   useEffect(() => {
     handleHitDashboardApi()
@@ -24,41 +23,11 @@ export const Dashboard = () => {
     dispatch(Services(tokenData))
   }
 
-  const handleImageError = () => {
-    setProfileImage('/assets/Profile_Photo.png')
-  }
-
-  useEffect(() => {
-    console.log('userProfile', userProfile)
-    console.log('userBalance', userBalance)
-    console.log('banner', banner)
-    console.log('services', services)
-  }, [userProfile, userBalance, banner, services])
-
   return (
-    <dev>
+    <div>
       <TopNavigation />
       <div>
-        <div className="flex direction-row">
-          <div className="flex-1 p-5">
-            <img
-              src={profileImage}
-              alt="profile"
-              className="w-12 h-12 mb-1"
-              onError={handleImageError}
-            />
-            <h5>{'Selamat datang,'}</h5>
-            <h3 className="font-bold">{`${userProfile?.data?.first_name} ${userProfile?.data?.last_name}`}</h3>
-          </div>
-          <div className="flex-1 p-5">
-            <div className="bg-red-500 p-5 rounded-xl">
-              <h5 className='text-white'>{'Saldo anda'}</h5>
-              <HideBalance balance={userBalance?.balance} />
-              <div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Header userBalance={userBalance} userProfile={userProfile}/>
         {/* Services */}
         <ul className="flex flex-wrap justify-around list-none p-0">
           {services &&
@@ -82,6 +51,6 @@ export const Dashboard = () => {
           </ul>
         </div>
       </div>
-    </dev>
+    </div>
   );
 };

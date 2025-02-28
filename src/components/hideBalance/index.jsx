@@ -15,7 +15,7 @@ export const HideBalance = ({ balance }) => {
                         <span key={index} className="inline-block w-2 h-2 bg-white rounded-xl mx-0.5"></span>
                     ))
                 ) : (
-                    `${balance.toFixed(0)}`
+                    `${balance}`
                 )}
             </h3>
             <button onClick={toggleVisibility} className='text-white'>

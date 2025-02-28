@@ -1,5 +1,6 @@
-.input-container {
+.textinput-container {
     padding: 2px;
+    width: 100%;
 }
 
 .input-wrapper {

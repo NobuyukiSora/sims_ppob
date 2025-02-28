@@ -3,7 +3,7 @@ import './styles.css'
 
 const TextInput = ({ type = "text", name, value, onChange, placeholder, isError, errorMessage }) => {
     return (
-        <div className="input-container">
+        <div className="textinput-container">
             <div className="input-wrapper">
                 <img
                     src={'/assets/Pulsa.png'}

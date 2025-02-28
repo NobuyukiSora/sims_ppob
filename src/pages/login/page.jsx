@@ -29,7 +29,6 @@ export const Login = () => {
     validateOnChange: true,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("Submitted Data:", values);
       handleLogin(values);
     },
   });
@@ -46,8 +45,6 @@ export const Login = () => {
         setErrorMessage(result.message);
         setErrorSnackBarVisible(true);
       } else {
-        console.log("Login Successful:", result);
-        dispatch(UserProfile(values))
         navigate("/Dashboard")
       }
 
