@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Banner, loginUser, registerUser, Services, UserBalance, UserProfile } from "./dispatchApi";
+import { Banner, loginUser, registerUser, Services, Topup, Transaction, TransactionHistory, UserBalance, UserProfile } from "./dispatchApi";
 
 const authSlice = createSlice({
     name: "auth",
@@ -11,7 +11,10 @@ const authSlice = createSlice({
         profile: null,
         balance: null,
         banner: null,
-        services: null
+        services: null,
+        topup: null,
+        transaction: null,
+        transactionHistory: null
     },
     reducers: {
         logout: (state) => {
@@ -23,6 +26,9 @@ const authSlice = createSlice({
             state.balance = null;
             state.banner = null;
             state.services = null;
+            state.topup = null;
+            state.transaction = null;
+            state.transactionHistory = null;
             localStorage.removeItem("token");
         },
     },
@@ -71,7 +77,6 @@ const authSlice = createSlice({
             .addCase(UserBalance.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.balance = action.payload?.data;
-                console.log('balance: ', state.balance)
             })
             .addCase(UserBalance.rejected, (state, action) => {
                 state.status = "failed";
@@ -83,7 +88,6 @@ const authSlice = createSlice({
             .addCase(Services.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.services = action.payload?.data;
-                console.log('balance: ', state.balance)
             })
             .addCase(Services.rejected, (state, action) => {
                 state.status = "failed";
@@ -95,9 +99,41 @@ const authSlice = createSlice({
             .addCase(Banner.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.banner = action.payload?.data;
-                console.log('balance: ', state.balance)
             })
             .addCase(Banner.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+            .addCase(Topup.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(Topup.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.transaction = action.payload?.data;
+            })
+            .addCase(Topup.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+            .addCase(Transaction.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(Transaction.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.transaction = action.payload?.data;
+            })
+            .addCase(Transaction.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload;
+            })
+            .addCase(TransactionHistory.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(TransactionHistory.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.transaction = action.payload?.data;
+            })
+            .addCase(TransactionHistory.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.payload;
             })

@@ -1,0 +1,41 @@
+.topup-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-container-topup {
+    flex: 1;
+    max-width: calc(100% - 450px);
+    padding-right: 16px;
+}
+
+.fixed-width-topup-balance {
+    width: 450px;
+}
+
+.button-group-topup-balance {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.option-button-topup-balance {
+    padding: 8px 16px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 130px;
+    color: #666;
+}
+
+.option-button-topup-balance:hover {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.option-button-topup-balance.selected {
+    border-color: #0056b3;
+    color: #0056b3;
+}

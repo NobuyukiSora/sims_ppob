@@ -139,7 +139,7 @@ export const Services = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error("Failed to fetch services");
       }
 
       const data = await response.json();
@@ -167,9 +167,109 @@ export const Banner = createAsyncThunk(
           "Authorization": `Bearer ${token}`,
         },
       });
+      console.log('banner response: ', response)
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error("Failed to fetch banner");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Topup
+export const Topup = createAsyncThunk(
+  "auth/topup",
+  async ({token, amount}, { rejectWithValue }) => {
+
+    if (!token) {
+      return rejectWithValue("No token found");
+    }
+    console.log('topup')
+    try {
+      const response = await fetch("https://take-home-test-api.nutech-integrasi.com/topup", {
+        method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            top_up_amount: amount,
+          }),
+      });
+
+      console.log('topup response: ', response)
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch topup");
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Transaction
+export const Transaction = createAsyncThunk(
+  "auth/transaction",
+  async ({token, service}, { rejectWithValue }) => {
+
+    if (!token) {
+      return rejectWithValue("No token found");
+    }
+
+    try {
+      const response = await fetch("https://take-home-test-api.nutech-integrasi.com/transaction", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          service_code: service,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch transaction");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Transaction History
+export const TransactionHistory = createAsyncThunk(
+  "auth/transactionHistory",
+  async (token, offset, limit, { rejectWithValue }) => {
+
+    if (!token) {
+      return rejectWithValue("No token found");
+    }
+
+    try {
+      const response = await fetch(`https://take-home-test-api.nutech-integrasi.com/transaction/history?offset=${offset}&limit=${limit}`, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch transaction");
       }
 
       const data = await response.json();
